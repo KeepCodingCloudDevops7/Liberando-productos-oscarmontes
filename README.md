@@ -123,7 +123,7 @@
   
   ![tests](https://user-images.githubusercontent.com/119674766/234513253-f077d955-d6f9-4f33-8337-c10293175695.jpg)
  
-## Monitorización:
+## Monitoring-Autoscaling:
 
 ### Prometheus:
 #### Software Necesario:
@@ -133,7 +133,10 @@
 
  * Para ver las métricas necesitamos Prometheus que a su vez necesita `minikube`:
    ```sh
-   minikube start --kubernetes-version=`v1.21.1` --memory=4096 -p liberando-productos-practica
+   minikube start --kubernetes-version='v1.21.1' \
+    --memory=4096 \
+    --addons="metrics-server,default-storageclass,storage-provisioner" \
+    -p monitoring-demo
    ```
 
  * Añadir repositorio helm
@@ -143,16 +146,16 @@
 
  * Desplegar chart Prometheus
    ```sh
-   helm -n monitorin upgrade --install prometheus prometheus-community/kube-prometheus-stack -f ./helm/kube-prometheus-stack/custom_values_prometheus.yaml --create-namespace --wait --version 34.1.1
+   helm -n monitoring upgrade --install prometheus prometheus-community/kube-prometheus-stack -f ./helm/kube-prometheus-stack/custom_values_prometheus.yaml --create-namespace --wait 
 
  * Port-forward al service de prometheus - http://localhost:9090
    ```sh
-   kubectl -n monitoring port-forward svc/prometheus-kube-prometheus-prometheus 9090:9090
+   kubectl -n monitoring port-forward svc/prometheus-kube-prometheus-prometheus 9090:9090 &
    ```
 
  * Port-forward al service de grafana - http://localhost:3000
    ```sh
-   kubectl -n monitoring port-forward svc/prometheus-grafana 3000:80
+   kubectl -n monitoring port-forward svc/prometheus-grafana 3000:80 &
    ```
  
  * Instalar metrics server
@@ -173,7 +176,7 @@
 
  * Desplegar app con helm:
    ```sh
-   helm -n liberando-productos-practica upgrade --install my-app --create-namespace --wait helm/fast-api-webapp
+   helm -n fast-api upgrade my-app --wait --install --create-namespace fast-api-webapp
    ```
 #### Alerta consumo
 
