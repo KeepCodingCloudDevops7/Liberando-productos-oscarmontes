@@ -1,9 +1,0 @@
-{{- if ((.Values.imageCredentials).password) -}}
-apiVersion: v1
-kind: Secret
-metadata:
-  name: dockerhub-access
-type: kubernetes.io/dockerconfigjson
-data:
-  .dockerconfigjson: {{ template "imagePullSecret" . }}
-{{- end }}
