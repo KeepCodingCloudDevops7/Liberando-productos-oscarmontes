@@ -160,7 +160,7 @@
  
  * Instalar metrics server
    ```sh
-   minikube addons enable metrics-server -p liberando-productos-practica
+   minikube addons enable metrics-server -p monitoring-demo
    ```
 
  * Añadir repositorio helm bitnami:
