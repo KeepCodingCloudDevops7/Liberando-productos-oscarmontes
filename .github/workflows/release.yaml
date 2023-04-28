@@ -1,4 +1,23 @@
+name: release-build
 
+on:
+  push:
+    tags:
+      - 'v*'
+    
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Unshallow
+        run: git fetch --prune --unshallow
+
+      - name: Get the version to publish
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
