@@ -41,7 +41,7 @@ jobs:
           node-version: 18
       
       - name: Setup package.json
-        run: echo '{echo '{
+        run: echo '{
              "name":"liberando-productos"
              ,"repository":{
              "type":"git", "url":"git@github.com:roberto-asir/practica-liberando-producto.git"
