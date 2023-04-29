@@ -41,7 +41,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: cd  /home/runner/work/Liberando-productos-*** && npm install
+        run:  npm install https://github.com/KeepCodingCloudDevops7/Liberando-productos-oscarmontes
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
