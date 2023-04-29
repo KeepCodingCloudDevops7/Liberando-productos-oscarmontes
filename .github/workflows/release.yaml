@@ -41,8 +41,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        working-directory: /home/runner/work/Liberando-productos-***
-        run:  npm install
+        run:  cd ../.. && npm install
         
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
