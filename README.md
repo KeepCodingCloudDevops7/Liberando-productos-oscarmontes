@@ -212,7 +212,8 @@
          ./estres -abuse-memory -escalate -max-duration 10000000
          ```
  *  Primero llega la alerta y después la recuperación:
-      (./img/alerta.jpg)
+    
+![slack](https://user-images.githubusercontent.com/119674766/235288715-bf479a64-1491-4bd6-ac47-8b42dddadcd8.png)
 
 ### Grafana
 
