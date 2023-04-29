@@ -51,8 +51,8 @@ jobs:
         id: configure-login-ghcr
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: oscarmontes
+          password: dckr_pat_dqvEUxMfluFrOECuo8XYia_47TQ
 
       - name: Login to Docker Hub
         uses: docker/login-action@v1
@@ -67,7 +67,7 @@ jobs:
       - name: Release
         id: semantic_release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: dckr_pat_dqvEUxMfluFrOECuo8XYia_47TQ
         run: npx semantic-release --debug
 
       - name: Get the version
