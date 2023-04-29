@@ -110,6 +110,9 @@ jobs:
 
       - name: Create empty semantic_release_version.txt file
         run: touch semantic_release_version.txt
+        
+      - name: Git pull
+        run: git pull origin main
 
       - name: Release
         id: semantic_release
