@@ -58,8 +58,8 @@ jobs:
         uses: docker/login-action@v1
         id: configure-login-dockerhub
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: oscarmontes
+          password: dckr_pat_dqvEUxMfluFrOECuo8XYia_47TQ
 
       - name: Create empty semantic_release_version.txt file
         run: touch semantic_release_version.txt
