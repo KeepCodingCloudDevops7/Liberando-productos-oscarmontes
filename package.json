@@ -2,7 +2,7 @@
   "name": "liberando-productos",
   "repository": {
     "type": "git",
-    "url": "git@github.com:KeepCodingCloudDevops7/Liberando-productos-oscarmontes.git""
+    "url": "git@github.com:KeepCodingCloudDevops7/Liberando-productos-oscarmontes.git"
   },
   "dependencies": {
     "@semantic-release/exec": "6.0.2",
