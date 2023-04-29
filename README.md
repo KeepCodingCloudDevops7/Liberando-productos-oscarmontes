@@ -136,7 +136,7 @@
    minikube start --kubernetes-version='v1.21.1' \
     --memory=4096 \
     --addons="metrics-server,default-storageclass,storage-provisioner" \
-    -p monitoring-demo
+    -p monitoring-practica
    ```
 
  * Añadir repositorio helm
@@ -160,20 +160,8 @@
  
  * Instalar metrics server
    ```sh
-   minikube addons enable metrics-server -p monitoring-demo
+   minikube addons enable metrics-server -p monitoring-practica
    ```
-
- * Añadir repositorio helm bitnami:
-   ```sh
-   helm repo add bitnami https://charts.bitnami.com/bitnami
-   helm repo update
-   ```
-
- * Descargar dependencias:
-   ```sh
-   helm dep up ./
-   ```
-
  * Desplegar app con helm:
    ```sh
    helm -n fast-api upgrade my-app --wait --install --create-namespace fast-api-webapp
@@ -206,7 +194,7 @@
 
  * Nos conectamos al POD
    ```sh
-   kubectl -n liberando-productos-practica exec -it $POD_NAME -- /bin/sh
+   kubectl -n fast-api exec -it $POD_NAME -- /bin/sh
    ```
    * Dentro del POD
       * Instalamos software
