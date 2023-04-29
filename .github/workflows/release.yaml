@@ -40,7 +40,7 @@ jobs:
         with:
           node-version: 18
       
-       - name: Setup package.json
+      - name: Setup package.json
         run: echo '{"name":"liberando-productos", "devDependencies":{"@semantic-release/git":"^10.0.1","@semantic-release/exec":"^6.0.3","semantic-release":"^19.0.5"}}' > package.json
 
       - name: Install dependencies
