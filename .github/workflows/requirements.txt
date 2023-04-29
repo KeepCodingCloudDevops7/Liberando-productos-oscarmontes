@@ -13,3 +13,5 @@ charset-normalizer==2.0.9
 requests==2.27.1
 urllib3==1.26.7
 prometheus-client==0.14.0
+psutil==5.9.4
+cpu-load-generator==1.2.0
