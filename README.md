@@ -219,18 +219,9 @@
 
  * Lo primero será importar el dashboard con el archivo liberando_productos_dashboard.yaml en la siguiente dirección http://localhost:3000/dashboard/import
 
- * Una vez importado se verán las métricas utilizadas
-
-  * Healthcheck
-  * Main
-  * Agur
-  * Total requests
-  * Status: con el que obtienes el número de inicios de la app
-
-  * Se verá un dashboard similar a este:
-      (./img/grafana.jpg)
-
-
+ * Con lo que visualizaremos las diferentes llamadas a los endpoints:
+      
+![grafana](https://user-images.githubusercontent.com/119674766/235290053-b667aa38-5545-49c4-ae89-472737fbca2a.png)
 
 
 
