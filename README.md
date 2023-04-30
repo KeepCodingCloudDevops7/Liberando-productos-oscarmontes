@@ -228,13 +228,14 @@ Para ello utilizo Github.
 
  * Lo primero será importar el dashboard con el archivo dashboard-oscar.json 
  
-```Para ello accederemos al panel de grafana:  https://0.0.0.0:3000
+```
+   Para ello accederemos al panel de grafana:  https://0.0.0.0:3000
    El usuario es admin y la contraseña prom-operator
    En el menú vertical de la izquierda: + >> Import
    Selecciona el archivo dashboard-oscar.json del directorio monitoring del repositorio clonado.
+```
  
   * Con lo que visualizaremos los diferentes Dashboards:
-´´´
       
 ![grafana](https://user-images.githubusercontent.com/119674766/235290053-b667aa38-5545-49c4-ae89-472737fbca2a.png)
 
