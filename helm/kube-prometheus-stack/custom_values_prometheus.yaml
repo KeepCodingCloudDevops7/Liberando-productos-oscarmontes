@@ -1,0 +1,156 @@
+coreDns:
+  enabled: true
+  service:
+    selector:
+      k8s-app: kube-dns
+kubeControllerManager:
+  enabled: false
+kubeEtcd:
+  enabled: true
+  service:
+    selector:
+      k8s-app: ""
+      component: etcd
+kubeScheduler:
+  enabled: false
+kubeApiServer:
+    enabled: true
+kubelet:
+  enabled: true
+kubeDns:
+  enabled: false
+kubeProxy:
+  enabled: true
+kubeStateMetrics:
+  enabled: true
+nodeExporter:
+  enabled: true
+  jobLabel: node-exporter
+  serviceMonitor:
+    relabelings:
+      - targetLabel: job
+        replacement: node-exporter
+prometheus-node-exporter:
+  podLabels:
+    jobLabel: node-exporter
+  extraArgs:
+    - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+    - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
+
+
+prometheus:
+  enabled: true
+  ## Configuration for Prometheus service
+  prometheusSpec:
+    scrapeInterval: 30s
+    scrapeTimeout: 10s
+    enableAdminAPI: true
+
+    externalUrl: ""
+
+    ruleSelectorNilUsesHelmValues: true
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+
+defaultRules:
+  create: true
+  rules:
+    alertmanager: true
+    etcd: true
+    configReloaders: true
+    general: true
+    k8s: true
+    kubeApiserver: true
+    kubeApiserverAvailability: true
+    kubeApiserverSlos: true
+    kubelet: true
+    kubeProxy: true
+    kubePrometheusGeneral: true
+    kubePrometheusNodeRecording: true
+    kubernetesApps: true
+    kubernetesResources: true
+    kubernetesStorage: true
+    kubernetesSystem: true
+    kubeScheduler: false
+    kubeStateMetrics: true
+    network: true
+    node: true
+    nodeExporterAlerting: true
+    nodeExporterRecording: true
+    prometheus: true
+    prometheusOperator: true
+
+## Configuration for alertmanager
+alertmanager:
+  config:
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by: ['job']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 12h
+      receiver: 'slack'
+      routes:
+      - match:
+          alertname: Watchdog
+        receiver: 'null'
+    # This inhibt rule is a hack from: https://stackoverflow.com/questions/54806336/how-to-silence-prometheus-alertmanager-using-config-files/54814033#54814033
+    inhibit_rules:
+      - target_match_re:
+           alertname: '.+Overcommit'
+        source_match:
+           alertname: 'Watchdog'
+        equal: ['prometheus']
+    receivers:
+    - name: 'null'
+    - name: 'slack'
+      slack_configs:
+      - api_url: 'https://hooks.slack.com/services/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' # <--- AÑADIR EN ESTA LÍNEA EL WEBHOOK CREADO
+        send_resolved: true
+        channel: '#liberando-oscar-montes' # <--- AÑADIR EN ESTA LÍNEA EL CANAL
+        title: '[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] Monitoring Event Notification'
+        text: |-
+          {{ range .Alerts }}
+            *Alert:* {{ .Labels.alertname }} - `{{ .Labels.severity }}`
+            *Description:* {{ .Annotations.message }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:> *Runbook:* <{{ .Annotations.runbook_url }}|:spiral_note_pad:>
+            *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}
+
+## Manages Prometheus and Alertmanager components
+prometheusOperator:
+  enabled: true
+
+additionalPrometheusRulesMap:
+  rule-name:
+    groups:
+      - name: ruleset_1
+        rules:
+          - alert: CPULimitsAlmostReached
+            expr: 100 * max(rate(container_cpu_usage_seconds_total{namespace="fast-api",pod=~"my-app-fast-api-webapp-.*"}[1m])) by (pod) / max(kube_pod_container_resource_limits{resource="cpu",namespace="fast-api"}) by (pod) > 80
+            for: 0m
+            labels:
+              severity: high
+            annotations:
+              summary: Practica CPU load alto. El contenedor {{$labels.container}} en {{$labels.pod}} en {{$labels.namespace}} está a más del 80% de uso del CPU.
+              description: "Fast-api-webapp pod is consuming more than 80% of CPU available"
+          - alert: CPULimitsReached
+            expr: max(rate(container_cpu_usage_seconds_total{namespace="fast-api",pod=~"my-app-fast-api-webapp-.*"}[1m])) by (pod) - max(kube_pod_container_resource_limits{resource="cpu",namespace="fast-api"}) by (pod) > 0
+            for: 0m
+            labels:
+              severity: critical
+            annotations:
+              summary: Practica CPU load alto. El contenedor {{$labels.container}} en {{$labels.pod}} en {{$labels.namespace}} está a más del 20% de uso del CPU.
+              description: "Fast-api-webapp pod is consuming more CPU than requested"
+          - alert: RAMLimitsReached
+            expr: container_memory_usage_bytes{namespace="fast-api",pod=~"my-app-fast-api-webapp-.*"} >= container_spec_memory_limit_bytes{namespace="fast-api",pod=~"my-app-fast-api-webapp-.*"}
+            for: 0m
+            labels:
+              severity: critical
+              alertname: "fast-api-webapp container is consuming more than requested"
+            annotations:
+              summary: Pod {{ $labels.pod }} consuming more than requested
+              description: "Fast-api-webapp pod is consuming more RAM than requested"
