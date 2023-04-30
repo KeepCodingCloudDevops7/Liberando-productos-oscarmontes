@@ -6,7 +6,7 @@ PIP		= $(VENV)/bin/pip
 IMAGE_REGISTRY_DOCKERHUB 	?= docker.io
 IMAGE_REGISTRY_GHCR			?= ghcr.io
 IMAGE_ORG_GHCR				?= keepcodingclouddevops7
-IMAGE_REPO					?= oscarmontest
+IMAGE_REPO					?= oscarmontes
 IMAGE_NAME					?= liberando-productos-oscarmontes
 VERSION						?= dev
 
