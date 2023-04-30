@@ -122,7 +122,16 @@
   * Con el resultado: 
   
   ![tests](https://user-images.githubusercontent.com/119674766/234513253-f077d955-d6f9-4f33-8337-c10293175695.jpg)
- 
+  
+## Creación de pipelines de CI/CD:
+
+```
+Para ello utilizo Github.
+```
+![gitaction1](https://user-images.githubusercontent.com/119674766/235340463-5d384bcd-862c-47cc-b1c2-0f2de048055c.png)
+
+![gitaction2](https://user-images.githubusercontent.com/119674766/235340469-c64a8df5-1483-4b4e-8584-7a4ffc793240.png)
+
 ## Monitoring-Autoscaling:
 
 ### Prometheus:
