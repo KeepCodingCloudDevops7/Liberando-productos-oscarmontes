@@ -5,12 +5,13 @@ ADD ./src/ /service/app/
 COPY requirements.txt /service/app/
 
 RUN apk --no-cache add curl build-base npm
-RUN sudo pip install --upgrade pip
-RUN sudo pip install -r requirements.txt
+RUN  pip install   --upgrade pip
+RUN  pip install   -r requirements.txt
 
 EXPOSE 8081
 
 ENV PYTHONUNBUFFERED 1
+ENV PIP_ROOT_USER_ACTION=ignore
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=5 \
     CMD curl -s --fail http://localhost:8081/health || exit 1
