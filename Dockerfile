@@ -5,8 +5,8 @@ ADD ./src/ /service/app/
 COPY requirements.txt /service/app/
 
 RUN apk --no-cache add curl build-base npm
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN sudo pip install --upgrade pip
+RUN sudo pip install -r requirements.txt
 
 EXPOSE 8081
 
