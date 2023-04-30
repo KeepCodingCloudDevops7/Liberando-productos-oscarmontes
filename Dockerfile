@@ -4,18 +4,11 @@ WORKDIR /service/app
 ADD ./src/ /service/app/
 COPY requirements.txt /service/app/
 
-RUN adduser -D myuser
-USER myuser
-WORKDIR /home/myuser
-
-COPY --chown=myuser:myuser requirements.txt requirements.txt
-
 RUN apk --no-cache add curl build-base npm
-RUN pip install  --user --upgrade pip
-RUN pip install  --user -r requirements.txt
+RUN pip install --root-user-action=ignore --upgrade pip 
+RUN pip install --root-user-action=ignore -r requirements.txt
 
 ENV PATH="/home/myuser/.local/bin:${PATH}"
-COPY --chown=myuser:myuser . .
 
 EXPOSE 8081
 
