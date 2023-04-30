@@ -3,15 +3,19 @@ PYTHON 	= $(VENV)/bin/python3
 PIP		= $(VENV)/bin/pip
 
 # Variables used to configure
-IMAGE_REGISTRY_DOCKERHUB 	?= xoanmallon
+IMAGE_REGISTRY_DOCKERHUB 	?= docker.io
 IMAGE_REGISTRY_GHCR			?= ghcr.io
-IMAGE_REPO					= keepcodingclouddevops6
-IMAGE_NAME					?= kc-7-liberando-productos-practica-final
-VERSION						?= develop
+IMAGE_ORG_GHCR				?= keepcodingclouddevops7
+IMAGE_REPO					?= oscarmontes
+IMAGE_NAME					?= liberando-productos-oscarmontes
+VERSION						?= dev
 
 # Variables used to configure docker images registries to build and push
-IMAGE			= $(IMAGE_REGISTRY)/$(IMAGE_REPO)/$(IMAGE_NAME):$(VERSION)
-IMAGE_LATEST	= $(IMAGE_REGISTRY)/$(IMAGE_REPO)/$(IMAGE_NAME):latest
+##IMAGE 				= $(IMAGE_REGISTRY_DOCKERHUB)/$(IMAGE_NAME):$(VERSION)
+IMAGE_DOCKER		= $(IMAGE_REGISTRY_DOCKERHUB)/$(IMAGE_REPO)/$(IMAGE_NAME)
+IMAGE_DOCKER_LATEST	= $(IMAGE_REGISTRY_DOCKERHUB)/$(IMAGE_REPO)/$(IMAGE_NAME):latest
+IMAGE_GHCR			= $(IMAGE_REGISTRY_GHCR)/$(IMAGE_ORG_GHCR)/$(IMAGE_REPO)/$(IMAGE_NAME)
+IMAGE_GHCR_LATEST	= $(IMAGE_REGISTRY_GHCR)/$(IMAGE_ORG_GHCR)/$(IMAGE_REPO)/$(IMAGE_NAME):latest
 
 .PHONY: run
 run: $(VENV)/bin/activate
@@ -32,11 +36,14 @@ $(VENV)/bin/activate: requirements.txt
 
 .PHONY: docker-build
 docker-build: ## Build image
-	docker build -t $(IMAGE) -t $(IMAGE_LATEST) -t $(IMAGE_GHCR) -t $(IMAGE_GHRC_LATEST) .
+	docker build -t $(IMAGE_DOCKER):$(VERSION) -t $(IMAGE_DOCKER_LATEST) 
+	 -t $(IMAGE_GHCR):$(VERSION) -t $(IMAGE_GHCR_LATEST) .
+
+##-t $(IMAGE_GHCR)
 
 .PHONY: publish
 publish: docker-build ## Publish image
-	docker push $(IMAGE)
-	docker push $(IMAGE_LATEST)
+	docker push $(IMAGE_DOCKER)
+#	docker push $(IMAGE_DOCKER_LATEST)
 	docker push $(IMAGE_GHCR)
-	docker push $(IMAGE_GHRC_LATEST)
+#	docker push $(IMAGE_GHCR_LATEST)
