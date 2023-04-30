@@ -226,35 +226,17 @@ Para ello utilizo Github.
 
 ### Grafana
 
- * Lo primero será importar el dashboard con el archivo liberando_productos_dashboard.yaml en la siguiente dirección http://localhost:3000/dashboard/import
-
- * Con lo que visualizaremos las diferentes llamadas a los endpoints:
+ * Lo primero será importar el dashboard con el archivo dashboard-oscar.json 
+ 
+```Para ello accederemos al panel de grafana:  https://0.0.0.0:3000
+   El usuario es admin y la contraseña prom-operator
+   En el menú vertical de la izquierda: + >> Import
+   Selecciona el archivo dashboard-oscar.json del directorio monitoring del repositorio clonado.
+ 
+  * Con lo que visualizaremos los diferentes Dashboards:
       
 ![grafana](https://user-images.githubusercontent.com/119674766/235290053-b667aa38-5545-49c4-ae89-472737fbca2a.png)
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-después de esto:
-helm -n liberando-productos-practica upgrade --install my-app --create-namespace --wait mychart/fast-api-webapp
-
-1
-export POD_NAME=$(kubectl get pods --namespace liberando-productos-practica -l "app.kubernetes.io/name=fast-api-webapp,app.kubernetes.io/instance=my-app" -o jsonpath="{.items[0].metadata.name}")
-
-2
-export CONTAINER_PORT=$(kubectl get pod --namespace liberando-productos-practica $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
-
-3
-kubectl --namespace liberando-productos-practica port-forward $POD_NAME 8080:$CONTAINER_PORT
